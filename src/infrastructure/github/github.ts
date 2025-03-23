@@ -3,12 +3,13 @@ import { CONFIG } from "../config/environment";
 
 export type UserData = {
   plainData: {
+    id: string;
     name: string;
     location: string;
-    id: number;
     email: string;
+    html_url: string;
+    avatar_url: string;
     created_at: string;
-    updated_at: string;
     [key: string]: string | number | boolean | object | null;
   };
   repositories: {
