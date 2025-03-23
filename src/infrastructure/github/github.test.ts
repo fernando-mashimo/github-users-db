@@ -59,6 +59,9 @@ describe("Should return requested user data", () => {
 describe("Should not return requested user data", () => {
   test("when user with provided username does not exist", async () => {
     const username = "non-existent-username";
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     axiosMock
       .onGet(`https://api.github.com/users/${username}`)
@@ -67,5 +70,44 @@ describe("Should not return requested user data", () => {
     const result = await getUserData(username);
 
     expect(result).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith(
+      `HTTP Error: 404 - User with username ${username} not found.`
+    );
+  });
+
+  test("when requester credentials are invalid", async () => {
+    const username = "any-username";
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    axiosMock
+      .onGet(`https://api.github.com/users/${username}`)
+      .reply(401, { message: "Bad credentials" });
+
+    const result = await getUserData(username);
+
+    expect(result).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "HTTP Error: 401: Unauthorized credentials"
+    );
+  });
+
+  test("when credentials are forbidden to get the resource", async () => {
+    const username = "any-username";
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    axiosMock
+      .onGet(`https://api.github.com/users/${username}`)
+      .reply(403, { message: "Forbidden" });
+
+    const result = await getUserData(username);
+
+    expect(result).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "HTTP Error: 403: Forbidden access"
+    );
   });
 });
