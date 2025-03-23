@@ -2,28 +2,40 @@ import axios, { AxiosError } from "axios";
 import { CONFIG } from "../config/environment";
 
 export type UserData = {
-  plainData: {
-    id: string;
-    name: string;
-    location: string;
-    email: string;
-    html_url: string;
-    avatar_url: string;
-    created_at: string;
-    [key: string]: string | number | boolean | object | null;
-  };
-  repositories: {
-    language: string;
-    [key: string]: string | number | boolean | object | null;
-  }[];
+  externalId: string;
+  name: string;
+  location: string;
+  email: string;
+  pageUrl: string;
+  avatarUrl: string;
+  bio: string;
+  createdAt: string;
+  programmingLanguages: string[];
 };
+
+type FetchedUserData = {
+  id: string;
+  name: string;
+  location: string;
+  email: string;
+  html_url: string;
+  avatar_url: string;
+  bio: string;
+  created_at: string;
+  [key: string]: string | number | boolean | object | null;
+};
+
+type FetchedReposData = {
+  language: string;
+  [key: string]: string | number | boolean | object | null;
+}[];
 
 export const getUserData = async (
   username: string
 ): Promise<UserData | undefined> => {
   try {
     const userDataUrl = `https://api.github.com/users/${username}`;
-    const userRepositoriesUrl = `https://api.github.com/users/${username}/repos`;
+    const reposDataUrl = `https://api.github.com/users/${username}/repos`;
 
     const headers = {
       Accept: "application/vnd.github+json",
@@ -31,31 +43,45 @@ export const getUserData = async (
       Authorization: `Bearer ${CONFIG.GITHUB_API_TOKEN}`,
     };
 
-    const [userDataResponse, userReposResponse] = await Promise.all([
+    const [userDataResponse, reposDataResponse] = await Promise.all([
       axios.get(userDataUrl, { headers }),
-      axios.get(userRepositoriesUrl, { headers }),
+      axios.get(reposDataUrl, { headers }),
     ]);
 
-    const userData = userDataResponse.data;
-    const userRepos = userReposResponse.data;
-
-    return {
-      plainData: userData,
-      repositories: userRepos,
-    };
+    return userDataMapper(userDataResponse.data, reposDataResponse.data);
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.status === 401)
-        console.error(`Error: ${error.status}: Unauthorized credentials`);
+        console.error(`HTTP Error: ${error.status}: Unauthorized credentials`);
       if (error.status === 403)
-        console.error(`Error: ${error.status}: Forbidden access`);
+        console.error(`HTTP Error: ${error.status}: Forbidden access`);
       if (error.status === 404)
         console.error(
-          `Error: ${error.status} - User with username ${username} not found.`
+          `HTTP Error: ${error.status} - User with username ` +
+            `${username} not found.`
         );
       return undefined;
     }
     console.error("Some error has occurred while fetching user data", error);
     return undefined;
   }
+};
+
+const userDataMapper = (
+  fetchedUserData: FetchedUserData,
+  fetchedReposData: FetchedReposData
+): UserData => {
+  const programmingLanguages = fetchedReposData.map((repos) => repos.language);
+
+  return {
+    externalId: fetchedUserData.id,
+    name: fetchedUserData.name,
+    location: fetchedUserData.location,
+    email: fetchedUserData.email,
+    pageUrl: fetchedUserData.html_url,
+    avatarUrl: fetchedUserData.avatar_url,
+    bio: fetchedUserData.bio,
+    createdAt: fetchedUserData.created_at,
+    programmingLanguages,
+  };
 };
