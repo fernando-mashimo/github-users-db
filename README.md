@@ -67,9 +67,9 @@ Once all pre-requisites are set up, you can use the following commands in your t
 
 - ``gh-users list``: Fetch and display a list of all users stored in the database.
   - You can filter the results by using optional parameters:
-    - -l <location> or --location <location>: Filter users by location.
-    - -p <programmingLanguage> or --programmingLanguage <programmingLanguage>: Filter users by programming language.
-    - Example: ``gh-users list -l "US" -p "Java"``
+    - ``-l <location>`` or ``--location <location>``: Filter users by location.
+    - -``p <programmingLanguage>`` or ``--programmingLanguage <programmingLanguage>``: Filter users by programming language.
+    - Example: ``gh-users list -l US -p Java``
       - Expected behavior: Fetches and displays users who are located in the US and have experience with Java.
 
 ## Running Tests
