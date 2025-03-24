@@ -20,6 +20,5 @@ CREATE TABLE IF NOT EXISTS user_languages (
   PRIMARY KEY (user_id, language_id)
 );
 
-CREATE INDEX idx_user_usename ON users(username);
 CREATE INDEX idx_user_location ON users(location);
 CREATE INDEX idx_language_name ON languages(name);
