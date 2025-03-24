@@ -27,7 +27,8 @@ Now, let's enable the local environment to run the application. Please, run the 
 - npm install: to install required Node packages;
 - docker compose up -d: to start up the database container
 - npm run migrations: to create the database tables
-  - alternatively run "npm run migrations:seeds" to also seed tables with fictional data
+  - alternatively run "npm run migrations:seeds" to also seed fictional data into the tables
+- npm link: required to make the command "gh-users" globally available. Otherwise, the CLI application will not run.
 
 Additional commands:
 - npm run lint: checks code compliance to the defined formatting rules:
