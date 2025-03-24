@@ -10,8 +10,12 @@ program
   .command("fetch <username>")
   .description("Fetch user data from GitHub and persist it in the database")
   .action(async (username: string) => {
-    await fetchPersistUser({ username });
-    process.exit(1);
+    const persistedUser = await fetchPersistUser({ username });
+    if (persistedUser)
+      console.info(
+        "User data successfully fetched and created/updated in the database!"
+      );
+    process.exit(0);
   });
 
 program
@@ -24,8 +28,14 @@ program
   )
   .action(async (options) => {
     const users = await getUsersByFilters(options);
-    if (users) console.info(users);
-    process.exit(1);
+    if (users && users.users.length) {
+      const usersFormatted = users.users.map((user) => ({
+        ...user,
+        programmingLanguages: [...user.programmingLanguages],
+      }));
+      console.info(usersFormatted);
+    }
+    process.exit(0);
   });
 
 program.parse(process.argv);
