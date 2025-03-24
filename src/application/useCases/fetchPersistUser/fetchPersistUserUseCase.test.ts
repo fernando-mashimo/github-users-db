@@ -43,7 +43,8 @@ describe("Should fetch and persist user data", () => {
     const result = await fetchPersistUser(useCaseInput);
 
     expect(result).toEqual({
-      userName: mockUserData.username,
+      externalId: mockUserData.externalId,
+      username: mockUserData.username,
       name: mockUserData.name,
       location: mockUserData.location,
       email: mockUserData.email,
@@ -61,7 +62,8 @@ describe("Should fetch and persist user data", () => {
     const result = await fetchPersistUser(useCaseInput);
 
     expect(result).toEqual({
-      userName: mockUserData.username,
+      externalId: mockUserData.externalId,
+      username: mockUserData.username,
       name: mockUserData.name,
       location: mockUserData.location,
       email: mockUserData.email,

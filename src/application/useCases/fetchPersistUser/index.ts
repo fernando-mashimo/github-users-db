@@ -11,46 +11,26 @@ dotenv.config();
 export const fetchPersistUser = async (
   input: FetchAndPersistUserDataUseCaseInput
 ): Promise<FetchAndPersistUserDataUseCaseOutput | undefined> => {
-  try {
-    console.info(`Fetching user ${input.username} data from GitHub...`);
-    const userGhData: User | undefined = await fetchUserDataFromGitHub(
-      input.username
-    );
-    // if user not found in GitHub or credentials invalid, return undefined
-    if (!userGhData) return;
+  console.info(`Fetching user ${input.username} data from GitHub...`);
+  const userGhData: User | undefined = await fetchUserDataFromGitHub(
+    input.username
+  );
+  // if user not found in GitHub or credentials invalid, return undefined
+  if (!userGhData) return;
 
-    // verify if user already exists in DB
-    const existingUserInDb = await getByExtId(userGhData.externalId);
-    if (existingUserInDb) {
-      // update existing user data
-      console.info(
-        "User already exists in the database. Updating user data..."
-      );
-      const updatedUser = await updateUser(userGhData);
-      if (!updatedUser) return;
-    } else {
-      // create new user
-      console.info("Creating new user in the database...");
-      const createdUser = await createUser(userGhData);
-      if (!createdUser) return;
-    }
-
-    return {
-      userName: userGhData.username,
-      name: userGhData.name,
-      location: userGhData.location,
-      email: userGhData.email,
-      pageUrl: userGhData.pageUrl,
-      avatarUrl: userGhData.avatarUrl,
-      bio: userGhData.bio,
-      createdAt: userGhData.createdAt,
-      programmingLanguages: userGhData.programmingLanguages,
-    };
-  } catch (error) {
-    console.error(
-      "Some error has occurred while fetching and persisting user data",
-      error
-    );
-    return undefined;
+  // verify if user already exists in DB
+  const existingUserInDb = await getByExtId(userGhData.externalId);
+  if (existingUserInDb) {
+    // update existing user data
+    console.info("User already exists in the database. Updating user data...");
+    const updatedUser = await updateUser(userGhData);
+    if (!updatedUser) return;
+  } else {
+    // create new user
+    console.info("Creating new user in the database...");
+    const createdUser = await createUser(userGhData);
+    if (!createdUser) return;
   }
+
+  return userGhData;
 };

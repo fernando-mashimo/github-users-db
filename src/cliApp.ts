@@ -11,10 +11,13 @@ program
   .description("Fetch user data from GitHub and persist it in the database")
   .action(async (username: string) => {
     const persistedUser = await fetchPersistUser({ username });
-    if (persistedUser)
+    if (persistedUser) {
       console.info(
-        "User data successfully fetched and created/updated in the database!"
+        `User data successfully fetched and created/updated in the database!
+        \nPersisted user data:`
       );
+      console.info(persistedUser);
+    }
     process.exit(0);
   });
 
