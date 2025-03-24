@@ -15,10 +15,10 @@ export const getByExtId = async (
       u.avatar_url,
       u.bio,
       u.created_at,
-      array_agg(l.name) AS programming_languages
+      array_remove(array_agg(l.name), null) AS programming_languages
     FROM users as u
-    JOIN user_languages ul ON ul.user_id = u.id
-    JOIN languages l ON l.id = ul.language_id
+    LEFT JOIN user_languages ul ON ul.user_id = u.id
+    LEFT JOIN languages l ON l.id = ul.language_id
     WHERE external_id = $1
     GROUP BY
       u.external_id,
@@ -56,10 +56,10 @@ export const getByFilters = async (filters?: {
       u.avatar_url,
       u.bio,
       u.created_at,
-      array_agg(l.name) AS programming_languages
+      array_remove(array_agg(l.name), null) AS programming_languages
     FROM users as u
-    JOIN user_languages ul ON ul.user_id = u.id
-    JOIN languages l ON l.id = ul.language_id
+    LEFT JOIN user_languages ul ON ul.user_id = u.id
+    LEFT JOIN languages l ON l.id = ul.language_id
     WHERE
       ($1 IS NULL OR LOWER(u.location) LIKE '%' || $1 || '%')
       AND ($2 IS NULL OR $2 IN (
