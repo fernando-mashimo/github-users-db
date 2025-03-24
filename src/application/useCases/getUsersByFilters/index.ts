@@ -6,6 +6,7 @@ export const getUsersByFilters = async (
   input: GetUsersByFiltersUseCaseInput
 ): Promise<GetUsersByFiltersUseCaseOutput | undefined> => {
   try {
+    console.info("Getting users data...");
     const users = await getByFilters(input);
     if (!users.length) {
       if (input.location || input.programmingLanguages)
