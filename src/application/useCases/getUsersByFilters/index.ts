@@ -9,7 +9,7 @@ export const getUsersByFilters = async (
     console.info("Getting users data...");
     const users = await getByFilters(input);
     if (!users.length) {
-      if (input.location || input.programmingLanguages)
+      if (input.location || input.programmingLanguage)
         console.info("No users found with the given filters");
       else console.info("No users found in the database");
       return;

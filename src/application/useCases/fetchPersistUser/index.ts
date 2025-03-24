@@ -6,7 +6,7 @@ import { fetchUserDataFromGitHub } from "../../../infrastructure/github/github";
 import { FetchAndPersistUserDataUseCaseInput } from "./input";
 import { FetchAndPersistUserDataUseCaseOutput } from "./output";
 
-export const fetchAndPersistUserData = async (
+export const fetchPersistUser = async (
   input: FetchAndPersistUserDataUseCaseInput
 ): Promise<FetchAndPersistUserDataUseCaseOutput | undefined> => {
   try {

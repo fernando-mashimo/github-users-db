@@ -43,7 +43,7 @@ export const getByExtId = async (
 
 export const getByFilters = async (filters?: {
   location?: string;
-  programmingLanguages?: string;
+  programmingLanguage?: string;
 }): Promise<User[]> => {
   const records = await db.manyOrNone(
     `SELECT
@@ -80,7 +80,7 @@ export const getByFilters = async (filters?: {
       u.created_at`,
     [
       filters?.location?.toLowerCase(),
-      filters?.programmingLanguages?.toLowerCase(),
+      filters?.programmingLanguage?.toLowerCase(),
     ]
   );
 
