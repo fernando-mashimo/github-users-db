@@ -5,6 +5,8 @@ import { updateUser } from "../../../infrastructure/database/functions/update";
 import { fetchUserDataFromGitHub } from "../../../infrastructure/github/github";
 import { FetchAndPersistUserDataUseCaseInput } from "./input";
 import { FetchAndPersistUserDataUseCaseOutput } from "./output";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const fetchPersistUser = async (
   input: FetchAndPersistUserDataUseCaseInput
@@ -14,7 +16,7 @@ export const fetchPersistUser = async (
     const userGhData: User | undefined = await fetchUserDataFromGitHub(
       input.username
     );
-    // if user not found in GitHub, return undefined
+    // if user not found in GitHub or credentials invalid, return undefined
     if (!userGhData) return;
 
     // verify if user already exists in DB
@@ -32,10 +34,6 @@ export const fetchPersistUser = async (
       const createdUser = await createUser(userGhData);
       if (!createdUser) return;
     }
-
-    console.info(
-      "User data successfully fetched and created/updated in the database!"
-    );
 
     return {
       userName: userGhData.username,

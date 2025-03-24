@@ -8,7 +8,7 @@ const runSeeds = async () => {
   try {
     const files = await fs.readdir(SEEDS_DIR);
 
-    const sqlFiles = files.filter((f) => f.endsWith(".sql")).sort();
+    const sqlFiles = files.filter((file) => file.endsWith(".sql")).sort();
 
     for (const file of sqlFiles) {
       const filePath = path.join(SEEDS_DIR, file);
@@ -23,7 +23,7 @@ const runSeeds = async () => {
     console.log("All seeds successfully ran");
   } catch (error) {
     console.error("Error seeding database:", error);
-    process.exit(1);
+    return;
   }
 };
 

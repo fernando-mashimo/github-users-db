@@ -11,7 +11,7 @@ const runMigrations = async () => {
   try {
     const files = await fs.readdir(MIGRATIONS_DIR);
 
-    const sqlFiles = files.filter((f) => f.endsWith(".sql")).sort();
+    const sqlFiles = files.filter((file) => file.endsWith(".sql")).sort();
 
     for (const file of sqlFiles) {
       const filePath = path.join(MIGRATIONS_DIR, file);
@@ -26,7 +26,7 @@ const runMigrations = async () => {
     console.log("All migrations successfully ran");
   } catch (error) {
     console.error("Error executing migrations:", error);
-    process.exit(1);
+    return;
   }
 };
 

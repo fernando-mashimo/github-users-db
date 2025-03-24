@@ -11,7 +11,7 @@ const resetDb = async () => {
   try {
     const files = await fs.readdir(ROLLBACK_DIR);
 
-    const sqlFiles = files.filter((f) => f.endsWith(".sql")).sort();
+    const sqlFiles = files.filter((file) => file.endsWith(".sql")).sort();
 
     for (const file of sqlFiles) {
       const filePath = path.join(ROLLBACK_DIR, file);
@@ -26,7 +26,7 @@ const resetDb = async () => {
     console.log("Database reset completed");
   } catch (error) {
     console.error("Error resetting database:", error);
-    process.exit(1);
+    return;
   }
 };
 

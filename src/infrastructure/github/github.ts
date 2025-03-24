@@ -1,5 +1,4 @@
 import axios, { AxiosError } from "axios";
-import { CONFIG } from "../config/environment";
 import { User } from "../../domain/entities/user";
 
 type FetchedUserData = {
@@ -30,7 +29,7 @@ export const fetchUserDataFromGitHub = async (
     const headers = {
       Accept: "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
-      Authorization: `Bearer ${CONFIG.GITHUB_API_TOKEN}`,
+      Authorization: `Bearer ${process.env.GITHUB_API_TOKEN}`,
     };
 
     const [userDataResponse, reposDataResponse] = await Promise.all([
