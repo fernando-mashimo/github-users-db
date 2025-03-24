@@ -41,37 +41,50 @@ export const getByExtId = async (
   return user;
 };
 
-export const listUsers = async (options: {
+export const getByFilters = async (filters?: {
   location?: string;
   programmingLanguages?: string;
 }): Promise<User[]> => {
-  let query = `SELECT
-    external_id,
-    name,
-    location,
-    email,
-    page_url,
-    avatar_url,
-    bio,
-    created_at,
-    FROM users`;
-  let params = [];
+  const records = await db.manyOrNone(
+    `SELECT
+      u.external_id,
+      u.username,
+      u.name,
+      u.location,
+      u.email,
+      u.page_url,
+      u.avatar_url,
+      u.bio,
+      u.created_at,
+      array_agg(l.name) AS programming_languages
+    FROM users as u
+    JOIN user_languages ul ON ul.user_id = u.id
+    JOIN languages l ON l.id = ul.language_id
+    WHERE
+      ($1 IS NULL OR LOWER(u.location) LIKE '%' || $1 || '%')
+      AND ($2 IS NULL OR $2 IN (
+        SELECT LOWER(l2.name)
+        FROM user_languages ul2
+        JOIN languages l2 ON l2.id = ul2.language_id
+        WHERE ul2.user_id = u.id
+      ))
+    GROUP BY
+      u.external_id,
+      u.username,
+      u.name,
+      u.location,
+      u.email,
+      u.page_url,
+      u.avatar_url,
+      u.bio,
+      u.created_at`,
+    [
+      filters?.location?.toLowerCase(),
+      filters?.programmingLanguages?.toLowerCase(),
+    ]
+  );
 
-  if (options.location) {
-    query +=
-      params.length > 0 ? " AND location LIKE $2" : " WHERE location LIKE $1";
-    params.push(`%${options.location}%`);
-  }
-
-  if (options.programmingLanguages) {
-    query += ` JOIN user_languages ul ON ul.user_id = users.id
-      JOIN languages l ON l.id = ul.language_id
-      WHERE l.name = $${params.length + 1}`;
-    params.push(options.programmingLanguages);
-  }
-
-  const users = await db.any(query, params);
-
+  const users = records.map((record) => mapDbObjectToUser(record));
   return users;
 };
 
@@ -103,6 +116,3 @@ const mapDbObjectToUser = (dbUser: DbUser): User => {
     programmingLanguages: dbUser.programming_languages,
   };
 };
-
-// listUsers({ username: "some-user-123456789" });
-// listUsers({ location: "Some City, SS" });

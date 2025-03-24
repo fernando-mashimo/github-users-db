@@ -56,5 +56,3 @@ export const fetchAndPersistUserData = async (
     return undefined;
   }
 };
-
-fetchAndPersistUserData({ username: "fernando-mashimo" });
