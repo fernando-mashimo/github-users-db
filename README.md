@@ -2,6 +2,20 @@
 
 A simple application to retrieve, persist, and display GitHub users' data via CLI commands. It is designed to run in Node.js (version 18 or higher recommended).
 
+## Installation
+
+To clone and set up the project:
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+
+2. Navigate into the project directory:
+   ```bash
+   cd github-users-db
+   ```
+
 ## Pre-requisites
 
 Before running any command in your terminal, ensure the following:
@@ -32,7 +46,7 @@ Before running any command in your terminal, ensure the following:
   ```
 
 ## Setting up the Local Environment
-To get the application up and running, follow these steps:
+To get the application ready to run, follow these steps:
 1. Run ``npm install`` to install the required Node packages.
 2. Run ``docker compose up -d`` to start the database container.
 3. Run ``npm run migrations`` to create the necessary database tables.
@@ -53,12 +67,15 @@ Once all pre-requisites are set up, you can use the following commands in your t
     - Example: ``gh-users list -l "US" -p "Java"``
       - Expected behavior: Fetches and displays users who are located in the US and have experience with Java.
 
+## Running Tests
+Currently, there a few tests that may be run through the command:
+- ``npm run test <testFileName.test.ts>``: Run tests using Jest.
+
 ## Other project commands (scripts)
 - ``npm run lint``: Check the code for compliance with the defined formatting rules:
   - Max line length: 80 characters.
   - Indentation: 2 spaces (no tabs).
 - ``npm run reset-db``: Reset the database by purging its tables. Afterward, run ``npm run migrations`` to recreate the tables.
-- ``npm run test <testFileName.test.ts>``: Run tests using Jest.
 
 ## Database Structure (ERD)
 
