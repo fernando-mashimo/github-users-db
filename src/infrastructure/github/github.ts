@@ -1,20 +1,10 @@
 import axios, { AxiosError } from "axios";
 import { CONFIG } from "../config/environment";
-
-export type UserData = {
-  externalId: string;
-  name: string;
-  location: string;
-  email: string;
-  pageUrl: string;
-  avatarUrl: string;
-  bio: string;
-  createdAt: string;
-  programmingLanguages: string[];
-};
+import { User } from "../../domain/entities/user";
 
 type FetchedUserData = {
-  id: string;
+  id: number;
+  login: string;
   name: string;
   location: string;
   email: string;
@@ -30,9 +20,9 @@ type FetchedReposData = {
   [key: string]: string | number | boolean | object | null;
 }[];
 
-export const getUserData = async (
+export const fetchUserDataFromGitHub = async (
   username: string
-): Promise<UserData | undefined> => {
+): Promise<User | undefined> => {
   try {
     const userDataUrl = `https://api.github.com/users/${username}`;
     const reposDataUrl = `https://api.github.com/users/${username}/repos`;
@@ -58,7 +48,7 @@ export const getUserData = async (
       if (error.status === 404)
         console.error(
           `HTTP Error: ${error.status} - User with username ` +
-            `${username} not found.`
+            `${username} not found at GitHub.`
         );
       return undefined;
     }
@@ -70,11 +60,14 @@ export const getUserData = async (
 const userDataMapper = (
   fetchedUserData: FetchedUserData,
   fetchedReposData: FetchedReposData
-): UserData => {
-  const programmingLanguages = fetchedReposData.map((repos) => repos.language);
+): User => {
+  const programmingLanguages = Array.from(
+    new Set<string>(fetchedReposData.map((repos) => repos.language))
+  ).filter((language) => language);
 
   return {
     externalId: fetchedUserData.id,
+    username: fetchedUserData.login,
     name: fetchedUserData.name,
     location: fetchedUserData.location,
     email: fetchedUserData.email,

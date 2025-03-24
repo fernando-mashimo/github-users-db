@@ -1,19 +1,21 @@
 INSERT INTO
   users (
+    username,
     name,
     location,
     email,
-    github_url,
+    page_url,
     avatar_url,
     created_at
   )
 VALUES
   (
+    'some-user-123456789',
     'Some User',
     'Some City, SS',
     'some_user@email.com',
-    'https://github.com/some-user-12345',
-    'https://avatars.githubusercontent.com/u/12345?v=4',
+    'https://github.com/some-user-123456789',
+    'https://avatars.githubusercontent.com/u/123456789?v=4',
     NOW()
   );
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { getUserData } from "./github";
+import { fetchUserDataFromGitHub } from "./github";
 
 const axiosMock = new MockAdapter(axios);
 
@@ -40,7 +40,7 @@ describe("Should return requested user data", () => {
       .onGet(`https://api.github.com/users/${username}/repos`)
       .reply(200, fetchedReposDataMock);
 
-    const result = await getUserData(username);
+    const result = await fetchUserDataFromGitHub(username);
 
     expect(result).toEqual({
       externalId: fetchedUserDataMock.id,
@@ -67,11 +67,11 @@ describe("Should not return requested user data", () => {
       .onGet(`https://api.github.com/users/${username}`)
       .reply(404, { message: "Not Found" });
 
-    const result = await getUserData(username);
+    const result = await fetchUserDataFromGitHub(username);
 
     expect(result).toBeUndefined();
     expect(consoleSpy).toHaveBeenCalledWith(
-      `HTTP Error: 404 - User with username ${username} not found.`
+      `HTTP Error: 404 - User with username ${username} not found at GitHub.`
     );
   });
 
@@ -85,7 +85,7 @@ describe("Should not return requested user data", () => {
       .onGet(`https://api.github.com/users/${username}`)
       .reply(401, { message: "Bad credentials" });
 
-    const result = await getUserData(username);
+    const result = await fetchUserDataFromGitHub(username);
 
     expect(result).toBeUndefined();
     expect(consoleSpy).toHaveBeenCalledWith(
@@ -103,7 +103,7 @@ describe("Should not return requested user data", () => {
       .onGet(`https://api.github.com/users/${username}`)
       .reply(403, { message: "Forbidden" });
 
-    const result = await getUserData(username);
+    const result = await fetchUserDataFromGitHub(username);
 
     expect(result).toBeUndefined();
     expect(consoleSpy).toHaveBeenCalledWith(
