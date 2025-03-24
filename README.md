@@ -84,3 +84,53 @@ Currently, there a few tests that may be run through the command:
 ## Technical choices
 ### Commander.js (CLI Tool)
 Commander.js is a popular npm package used to build CLI applications in Node.js. While it is possible to create a CLI parser using process.argv, Commander.js was chosen for this project due to its reliable and easy-to-use functionality. It simplifies command definition, argument handling, and help message display, which helps reducing development time, improves maintainability, and enhances the user experience. 🚀
+
+## Troubleshooting
+
+- ### Problem: `gh-users` command not found after running `npm link`.
+
+  **Solution**: Try running `npm link` again and ensure that the npm global bin directory is in your `PATH`.
+
+  ### Steps to ensure npm global bin directory is in your PATH:
+
+  #### For Linux/macOS:
+  1. Run the following command to find the npm global bin directory:
+      ```bash
+      npm config get prefix
+      ``` 
+     You should see a path like /home/username/.nvm/versions/node/v18.xx.y.
+
+  2. Add this directory to your PATH by running the following command:
+      ```bash
+      echo 'export PATH="$PATH:<npm-global-bin-path>"' >> ~/.bashrc
+      ```
+      Or for Zsh users (macOS defaults to Zsh):
+      ```bash
+      echo 'export PATH="$PATH:<npm-global-bin-path>"' >> ~/.zshrc
+      ```
+  3. After that, run:
+      ```bash
+      source ~/.bashrc  # or source ~/.zshrc for Zsh
+      ```
+  4. Now, try running ``gh-users`` again.
+
+  #### For Windows:
+  1. Open a command prompt and run the following:
+      ```bash
+      npm config get prefix
+      ```
+      You should see a directory like ``C:\Users\<YourUsername>\AppData\Roaming\npm``.
+
+  2. Add this directory to your ``PATH`` environment variable:
+      - Right-click on This PC or Computer, and select Properties.
+      - Click on Advanced system settings and then on Environment Variables.
+      - In the User variables section, select Path and click Edit.
+      - Add the npm bin directory path (C:\Users\<YourUsername>\AppData\Roaming\npm), and click OK.
+  3. Restart your command prompt or terminal, and then try running ``gh-users`` again.
+
+- ### Problem: Database connection issues.
+
+  **Solution**: Double-check your ``.env`` file configuration, especially the ``DB_HOST``, ``DB_PORT``, ``DB_NAME``, ``DB_USER``, and ``DB_PASSWORD`` values. Ensure that the Docker container is running correctly with:
+    ```bash
+    docker compose ps
+    ```

@@ -37,6 +37,6 @@
     "typescript": "~5.6.3"
   },
   "bin": {
-    "gh-users": "./src/infrastructure/cli/cliApp.ts"
+    "gh-users": "./src/cliApp.ts"
   }
 }

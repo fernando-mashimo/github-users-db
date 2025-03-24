@@ -1,8 +1,8 @@
 #!/usr/bin/env ts-node
 import { Command } from "commander";
 // eslint-disable-next-line max-len
-import { getUsersByFilters } from "../../application/useCases/getUsersByFilters";
-import { fetchPersistUser } from "../../application/useCases/fetchPersistUser";
+import { getUsersByFilters } from "./application/useCases/getUsersByFilters";
+import { fetchPersistUser } from "./application/useCases/fetchPersistUser";
 
 const program = new Command();
 
