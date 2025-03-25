@@ -85,15 +85,17 @@ Currently, there a few tests that may be run through the command:
 
 ![ERD Diagram](./ERD.png)
 
-## Technical choices
-### Commander.js (CLI Tool)
-Commander.js is a popular npm package used to build CLI applications in Node.js. While it is possible to create a CLI parser using process.argv, Commander.js was chosen for this project due to its reliable and easy-to-use functionality. It simplifies command definition, argument handling, and help message display, which helps reducing development time, improves maintainability, and enhances the user experience. 🚀
+## You may also want to try...
+### Another implementation of the CLI with the command "gh-users-v2"
+This second implementation of the CLI used Commander.js, a popular npm package used to build CLI applications in Node.js. While the implementation of the CLI parser using process.argv has proven to be challenging, Commander.js was a reliable and easy-to-use alternative. It simplifies command definition, argument handling, and offers the additional functionality of displaying help messages, reducing development time, improving maintainability, and enhancing user experience. 🚀
 
-- To get to know a litte more about it, visit: [Commander.js](https://www.npmjs.com/package/commander)
+- To get to know a litte more about this package, visit: [Commander.js](https://www.npmjs.com/package/commander)
+
+Try this implementation by replacing the command "gh-users" with "gh-users-v2".
 
 ## Troubleshooting
 
-- ### Problem: `gh-users` command not found after running `npm link`.
+- ### Problem: `gh-users` ou `gh-users-v2` commands not found after running `npm link`.
 
   **Solution**: Try running `npm link` again and ensure that the npm global bin directory is in your `PATH`.
 
