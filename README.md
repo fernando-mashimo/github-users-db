@@ -1,2 +1,2 @@
 # github-users-db
-GitHub Users' information repository (Lovely Stay online assessment)
+GitHub Users' information repository
