@@ -36,7 +36,7 @@ program
         ...user,
         programmingLanguages: [...user.programmingLanguages],
       }));
-      console.info(usersFormatted);
+      console.info("Found users data:", usersFormatted);
     }
     process.exit(0);
   });
