@@ -89,6 +89,8 @@ Currently, there a few tests that may be run through the command:
 ### Commander.js (CLI Tool)
 Commander.js is a popular npm package used to build CLI applications in Node.js. While it is possible to create a CLI parser using process.argv, Commander.js was chosen for this project due to its reliable and easy-to-use functionality. It simplifies command definition, argument handling, and help message display, which helps reducing development time, improves maintainability, and enhances the user experience. 🚀
 
+- To get to know a litte more about it, visit: [Commander.js](https://www.npmjs.com/package/commander)
+
 ## Troubleshooting
 
 - ### Problem: `gh-users` command not found after running `npm link`.
