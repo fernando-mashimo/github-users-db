@@ -1,5 +1,4 @@
 # github-users-db
-
 A simple application to retrieve, persist, and display GitHub users' data via CLI commands. It is designed to run in Node.js (version 18 or higher recommended).
 
 ## Installation
