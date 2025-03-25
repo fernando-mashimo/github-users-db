@@ -40,39 +40,26 @@ const useCaseInput: FetchAndPersistUserDataUseCaseInput = {
 
 describe("Should fetch and persist user data", () => {
   test("when user still not created in the database", async () => {
+    const consoleSpy = jest.spyOn(console, "info").mockImplementation();
+
     const result = await fetchPersistUser(useCaseInput);
 
-    expect(result).toEqual({
-      externalId: mockUserData.externalId,
-      username: mockUserData.username,
-      name: mockUserData.name,
-      location: mockUserData.location,
-      email: mockUserData.email,
-      pageUrl: mockUserData.pageUrl,
-      avatarUrl: mockUserData.avatarUrl,
-      bio: mockUserData.bio,
-      createdAt: mockUserData.createdAt,
-      programmingLanguages: mockUserData.programmingLanguages,
-    });
+    expect(result).toEqual(mockUserData);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "Creating new user in the database..."
+    );
   });
 
   test("when user has already been created in the database", async () => {
     (getByExtId as jest.Mock).mockResolvedValueOnce(mockUserData);
+    const consoleSpy = jest.spyOn(console, "info").mockImplementation();
 
     const result = await fetchPersistUser(useCaseInput);
 
-    expect(result).toEqual({
-      externalId: mockUserData.externalId,
-      username: mockUserData.username,
-      name: mockUserData.name,
-      location: mockUserData.location,
-      email: mockUserData.email,
-      pageUrl: mockUserData.pageUrl,
-      avatarUrl: mockUserData.avatarUrl,
-      bio: mockUserData.bio,
-      createdAt: mockUserData.createdAt,
-      programmingLanguages: mockUserData.programmingLanguages,
-    });
+    expect(result).toEqual(mockUserData);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "User already exists in the database. Updating user data..."
+    );
   });
 });
 
