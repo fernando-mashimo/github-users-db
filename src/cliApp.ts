@@ -66,10 +66,7 @@ const main = async (): Promise<number> => {
         username: argument.username,
       });
       if (persistedUser) {
-        console.info(
-          `User data successfully fetched and created/updated in the database!
-              \nPersisted user data:`
-        );
+        console.info("Persisted user data:");
         console.info(persistedUser);
       }
     } catch (error) {

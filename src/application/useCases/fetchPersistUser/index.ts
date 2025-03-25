@@ -32,5 +32,8 @@ export const fetchPersistUser = async (
     if (!createdUser) return;
   }
 
+  console.info(
+    "User data successfully fetched and created/updated in the database!"
+  );
   return userGhData;
 };
