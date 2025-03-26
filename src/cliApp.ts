@@ -63,13 +63,14 @@ const parseArguments = (args: string[]): Arguments => {
   return { command, username: args[3] };
 };
 
-const main = async (): Promise<number> => {
+export const main = async (): Promise<number> => {
   const isArgumentsValid = validateArguments(process.argv);
   if (!isArgumentsValid) {
     console.error(
-      `Invalid arguments. Please use 'gh-users fetch <username>' or
-      'gh-users list [-l or --location <location>]
-      [-p or --programmingLanguage <programmingLanguage>]'.`
+      "Invalid arguments. Please use one of the following commands:\n" +
+        "  'gh-users fetch <username>'\n" +
+        "  'gh-users list [-l or --location <location>] " +
+        "[-p or --programmingLanguage <programmingLanguage>]'."
     );
     return 1;
   }
@@ -82,8 +83,7 @@ const main = async (): Promise<number> => {
         username: argument.username!,
       });
       if (persistedUser) {
-        console.info("Persisted user data:");
-        console.info(persistedUser);
+        console.info("Persisted user data:", persistedUser);
       }
     } catch (error) {
       console.error(
@@ -113,7 +113,9 @@ const main = async (): Promise<number> => {
   return 0;
 };
 
-(async () => {
-  const exitCode = await main();
-  process.exit(exitCode);
-})();
+if (require.main === module) {
+  (async () => {
+    const exitCode = await main();
+    process.exit(exitCode);
+  })();
+}
