@@ -87,7 +87,7 @@ Currently, there a few tests that may be run through the command:
 
 ## You may also want to try...
 ### Another implementation of the CLI with the command "gh-users-v2"
-This second implementation of the CLI used Commander.js, a popular npm package used to build CLI applications in Node.js. While the implementation of the CLI parser using process.argv has proven to be challenging, Commander.js was a reliable and easy-to-use alternative. It simplifies command definition, argument handling, and offers the additional functionality of displaying help messages, reducing development time, improving maintainability, and enhancing user experience. 🚀
+This second implementation of the CLI used Commander.js, a popular npm package used to build CLI applications in Node.js. While the implementation of the CLI parser using process.argv has proven to be a little bit more challenging, Commander.js was a reliable and easy-to-use alternative. It simplifies command definition, argument handling, and offers the additional functionality of displaying help messages, reducing development time, improving maintainability, and enhancing user experience. 🚀
 
 - To get to know a litte more about this package, visit: [Commander.js](https://www.npmjs.com/package/commander)
 
