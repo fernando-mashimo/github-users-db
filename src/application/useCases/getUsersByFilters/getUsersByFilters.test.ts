@@ -24,7 +24,7 @@ describe("Should fetch users by filters", () => {
     const useCaseInput = {};
     const result = await getUsersByFilters(useCaseInput);
 
-    expect(result).toEqual({ users: [mockUserData] });
+    expect(result).toEqual([mockUserData]);
   });
 
   // eslint-disable-next-line max-len
@@ -32,7 +32,7 @@ describe("Should fetch users by filters", () => {
     const useCaseInput = { location: "Test Location" };
     const result = await getUsersByFilters(useCaseInput);
 
-    expect(result).toEqual({ users: [mockUserData] });
+    expect(result).toEqual([mockUserData]);
   });
 });
 

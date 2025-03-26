@@ -39,9 +39,7 @@ describe("Should list users", () => {
   test("when list command provided with no parameters", async () => {
     process.argv = ["node", "script", "list"];
 
-    (getUsersByFilters as jest.Mock).mockResolvedValueOnce({
-      users: [mockedUser],
-    });
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
     const consoleSpy = jest.spyOn(console, "info");
 
     const exitCode = await main();
@@ -53,9 +51,7 @@ describe("Should list users", () => {
   test("when list command provided with -l parameter", async () => {
     process.argv = ["node", "script", "list", "-l", "test location"];
 
-    (getUsersByFilters as jest.Mock).mockResolvedValueOnce({
-      users: [mockedUser],
-    });
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
     const consoleSpy = jest.spyOn(console, "info");
 
     const exitCode = await main();
@@ -67,9 +63,7 @@ describe("Should list users", () => {
   test("when list command provided with -p parameter", async () => {
     process.argv = ["node", "script", "list", "-p", "test"];
 
-    (getUsersByFilters as jest.Mock).mockResolvedValueOnce({
-      users: [mockedUser],
-    });
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
     const consoleSpy = jest.spyOn(console, "info");
 
     const exitCode = await main();
@@ -81,9 +75,7 @@ describe("Should list users", () => {
   test("when list command provided with --location parameter", async () => {
     process.argv = ["node", "script", "list", "--location", "test location"];
 
-    (getUsersByFilters as jest.Mock).mockResolvedValueOnce({
-      users: [mockedUser],
-    });
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
     const consoleSpy = jest.spyOn(console, "info");
 
     const exitCode = await main();
@@ -95,9 +87,7 @@ describe("Should list users", () => {
   test("when list provided with --programmingLanguage parameter", async () => {
     process.argv = ["node", "script", "list", "--programmingLanguage", "test"];
 
-    (getUsersByFilters as jest.Mock).mockResolvedValueOnce({
-      users: [mockedUser],
-    });
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
     const consoleSpy = jest.spyOn(console, "info");
 
     const exitCode = await main();
@@ -117,9 +107,7 @@ describe("Should list users", () => {
       "test",
     ];
 
-    (getUsersByFilters as jest.Mock).mockResolvedValueOnce({
-      users: [mockedUser],
-    });
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
     const consoleSpy = jest.spyOn(console, "info");
 
     const exitCode = await main();
@@ -139,9 +127,7 @@ describe("Should list users", () => {
       "test",
     ];
 
-    (getUsersByFilters as jest.Mock).mockResolvedValueOnce({
-      users: [mockedUser],
-    });
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
     const consoleSpy = jest.spyOn(console, "info");
 
     const exitCode = await main();

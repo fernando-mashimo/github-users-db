@@ -10,13 +10,6 @@ type Arguments = {
   programmingLanguage?: string;
 };
 
-const formatUsers = (users: User[]): User[] => {
-  return users.map((user) => ({
-    ...user,
-    programmingLanguages: [...user.programmingLanguages],
-  }));
-};
-
 const validateArguments = (args: string[]): boolean => {
   const allowedCommands = ["fetch", "list"];
   const allowedOptions = ["-l", "--location", "-p", "--programmingLanguage"];
@@ -100,9 +93,8 @@ export const main = async (): Promise<number> => {
         location: argument.location,
         programmingLanguage: argument.programmingLanguage,
       });
-      if (users && users.users.length) {
-        const usersFormatted = formatUsers(users.users);
-        console.info("Found users data:", usersFormatted);
+      if (users && users.length) {
+        console.info("Found users data:", users);
       }
     } catch (error) {
       console.error("An error occurred while fetching users:", error);

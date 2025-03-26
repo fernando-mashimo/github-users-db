@@ -36,12 +36,8 @@ program
   )
   .action(async (options) => {
     const users = await getUsersByFilters(options);
-    if (users && users.users.length) {
-      const usersFormatted = users.users.map((user) => ({
-        ...user,
-        programmingLanguages: [...user.programmingLanguages],
-      }));
-      console.info("Found users data:", usersFormatted);
+    if (users && users.length) {
+      console.info("Found users data:", users);
     }
     process.exit(0);
   });

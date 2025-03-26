@@ -19,5 +19,5 @@ export const getUsersByFilters = async (
     return;
   }
 
-  return { users };
+  return users;
 };
