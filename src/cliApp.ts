@@ -4,7 +4,7 @@ import { getUsersByFilters } from "./application/useCases/getUsersByFilters";
 import { User } from "./domain/entities/user";
 
 type Arguments = {
-  command: "fetch" | "list" | "invalid";
+  command: "fetch" | "list";
   username?: string;
   location?: string;
   programmingLanguage?: string;
@@ -17,11 +17,29 @@ const formatUsers = (users: User[]): User[] => {
   }));
 };
 
-const parseArguments = (args: string[]): Arguments => {
-  const command =
-    args[2] === "fetch" || args[2] === "list" ? args[2] : "invalid";
+const validateArguments = (args: string[]): boolean => {
+  const allowedCommands = ["fetch", "list"];
+  const allowedOptions = ["-l", "--location", "-p", "--programmingLanguage"];
 
-  if (command === "fetch") return { command, username: args[3] };
+  if (args.length < 3 || !allowedCommands.includes(args[2])) return false;
+
+  if (args[2] === "list") {
+    const options = args.slice(3);
+    if (options.length === 0) return true;
+
+    if (options.length % 2 !== 0) return false;
+
+    const isOptionsValid = options.every((_, i) =>
+      i % 2 === 0 ? allowedOptions.includes(options[i]) : true
+    );
+    return isOptionsValid;
+  }
+
+  return args.length === 4; // when args[2] === "fetch"
+};
+
+const parseArguments = (args: string[]): Arguments => {
+  const command = args[2] as Arguments["command"];
 
   if (command === "list") {
     const location = args.includes("-l")
@@ -42,28 +60,26 @@ const parseArguments = (args: string[]): Arguments => {
     };
   }
 
-  return { command };
+  return { command, username: args[3] };
 };
 
 const main = async (): Promise<number> => {
-  const argument = parseArguments(process.argv);
-
-  if (argument.command === "invalid") {
+  const isArgumentsValid = validateArguments(process.argv);
+  if (!isArgumentsValid) {
     console.error(
-      "Invalid command. Please use 'gh-users fetch' or 'gh-users list'."
+      `Invalid arguments. Please use 'gh-users fetch <username>' or
+      'gh-users list [-l or --location <location>]
+      [-p or --programmingLanguage <programmingLanguage>]'.`
     );
     return 1;
   }
 
-  if (argument.command === "fetch") {
-    if (!argument.username || process.argv.length > 4) {
-      console.error("Please provide one username to fetch user data.");
-      return 1;
-    }
+  const argument = parseArguments(process.argv);
 
+  if (argument.command === "fetch") {
     try {
       const persistedUser = await fetchPersistUser({
-        username: argument.username,
+        username: argument.username!,
       });
       if (persistedUser) {
         console.info("Persisted user data:");
