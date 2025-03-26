@@ -1,7 +1,6 @@
 #!/usr/bin/env ts-node
 import { fetchPersistUser } from "./application/useCases/fetchPersistUser";
 import { getUsersByFilters } from "./application/useCases/getUsersByFilters";
-import { User } from "./domain/entities/user";
 
 type Arguments = {
   command: "fetch" | "list";
