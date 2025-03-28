@@ -49,7 +49,7 @@ To get the application ready to run, follow these steps:
     DB_PORT=5432
     DB_NAME=github-db
     DB_USER=postgres
-    DB_PASSWORD=postgres
+    DB_PASSWORD=password
     ```
 2. Run ``npm install`` to install the required Node packages.
 3. Run ``docker compose up -d`` to create and start the PostgreSQL database instance inside a Docker container.
