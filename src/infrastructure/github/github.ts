@@ -19,25 +19,21 @@ type FetchedReposData = {
   [key: string]: string | number | boolean | object | null;
 }[];
 
+const headers = {
+  Accept: "application/vnd.github+json",
+  "X-GitHub-Api-Version": "2022-11-28",
+  Authorization: `Bearer ${process.env.GITHUB_API_TOKEN}`,
+};
+
 export const fetchUserDataFromGitHub = async (
   username: string
 ): Promise<User | undefined> => {
   try {
-    const userDataUrl = `https://api.github.com/users/${username}`;
-    const reposDataUrl = `https://api.github.com/users/${username}/repos`;
-
-    const headers = {
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      Authorization: `Bearer ${process.env.GITHUB_API_TOKEN}`,
-    };
-
     const [userDataResponse, reposDataResponse] = await Promise.all([
-      axios.get(userDataUrl, { headers }),
-      axios.get(reposDataUrl, { headers }),
+      fetchUserBaseData(username),
+      fetchUserReposData(username),
     ]);
-
-    return userDataMapper(userDataResponse.data, reposDataResponse.data);
+    return userDataMapper(userDataResponse, reposDataResponse);
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.status === 401)
@@ -56,6 +52,55 @@ export const fetchUserDataFromGitHub = async (
   }
 };
 
+const fetchUserBaseData = async (
+  username: string
+): Promise<FetchedUserData> => {
+  const userDataUrl = `https://api.github.com/users/${username}`;
+
+  const response = await axios.get(userDataUrl, { headers });
+
+  return response.data;
+};
+
+const fetchUserReposData = async (
+  username: string
+): Promise<FetchedReposData> => {
+  const reposDataUrl = `https://api.github.com/users/${username}/repos`;
+
+  const response = await axios.get(reposDataUrl, { headers });
+
+  if (response.headers.link) {
+    const lastPage = parseInt(
+      response.headers.link
+        .split(", ")
+        // eslint-disable-next-line prettier/prettier
+        .find((link: string) => link.includes("rel=\"last\""))!
+        .match(/page=(\d+)>; rel="last"/)![1]
+    );
+
+    // Create an array with the page numbers to fetch.
+    // Since first page is already fetched, the array:
+    // - has a length of (lastPage - 1) elements
+    // - starts from 2
+    const pages = Array.from({ length: lastPage - 1 }, (_, index) => index + 2);
+
+    const additionalReposData = await Promise.all(
+      pages.map((page) =>
+        axios.get(`${reposDataUrl}?page=${page}`, { headers })
+      )
+    );
+
+    const allReposData = additionalReposData.reduce(
+      (acc, additionalData) => acc.concat(additionalData.data),
+      response.data
+    );
+
+    return allReposData;
+  }
+
+  return response.data;
+};
+
 const userDataMapper = (
   fetchedUserData: FetchedUserData,
   fetchedReposData: FetchedReposData
@@ -68,7 +113,7 @@ const userDataMapper = (
     externalId: fetchedUserData.id,
     username: fetchedUserData.login,
     name: fetchedUserData.name,
-    location: fetchedUserData.location,
+    location: fetchedUserData.location ?? "",
     email: fetchedUserData.email,
     pageUrl: fetchedUserData.html_url,
     avatarUrl: fetchedUserData.avatar_url,
