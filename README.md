@@ -32,6 +32,7 @@ Before running any command in your terminal, ensure the following:
       - Then, use NVM to install Node.js.
 
 - **Docker** and **Docker Compose** are installed and ready:
+  - Docker and Docker Compose are required in order to create and run a container with an instance of a PostgreSQL database.
   - If you don’t have Docker or Docker Compose, please follow these links:
     - [Get Docker](https://docs.docker.com/get-docker/)
     - [Install Docker Compose](https://docs.docker.com/compose/install/)
@@ -52,7 +53,7 @@ Before running any command in your terminal, ensure the following:
 ## Setting up the Local Environment
 To get the application ready to run, follow these steps:
 1. Run ``npm install`` to install the required Node packages.
-2. Run ``docker compose up -d`` to start the database container.
+2. Run ``docker compose up -d`` to create and start PostgreSQL database container.
 3. Run ``npm run migrations`` to create the necessary database tables.
     - Alternatively, you can run ``npm run migrations:seeds`` to also seed the database with fictional data.
 
