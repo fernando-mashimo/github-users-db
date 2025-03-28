@@ -40,24 +40,22 @@ Before running any command in your terminal, ensure the following:
 - You have a **GitHub Personal Access Token (Classic)**:
   - If you haven't created one yet, follow the guide here: [Creating a Personal Access Token (Classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
 
-- You've created a `.env` file in the project root directory with the following variables:
-  ```bash
-  GITHUB_API_TOKEN="your GitHub personal access token"
-  DB_HOST=localhost
-  DB_PORT=5432
-  DB_NAME=github-db
-  DB_USER=postgres
-  DB_PASSWORD=postgres
-  ```
-
 ## Setting up the Local Environment
 To get the application ready to run, follow these steps:
-1. Run ``npm install`` to install the required Node packages.
-2. Run ``docker compose up -d`` to create and start PostgreSQL database instance inside the container.
-3. Run ``npm run migrations`` to create the necessary database tables.
+1. Create a `.env` file in the project root directory with the following variables:
+    ```bash
+    GITHUB_API_TOKEN="your GitHub personal access token"
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_NAME=github-db
+    DB_USER=postgres
+    DB_PASSWORD=postgres
+    ```
+2. Run ``npm install`` to install the required Node packages.
+3. Run ``docker compose up -d`` to create and start the PostgreSQL database instance inside a Docker container.
+4. Run ``npm run migrations`` to create the necessary database tables.
     - Alternatively, you can run ``npm run migrations:seeds`` to also seed the database with fictional data.
-
-4. Run ``npm link`` to make the CLI application globally available (you will then be able to run it using the ``gh-users`` command).
+5. Run ``npm link`` to make the CLI application globally available (you will then be able to run it using the ``gh-users`` command).
 
 ## Running the CLI App
 ### Main Commands
@@ -69,7 +67,7 @@ Once all pre-requisites are set up, you can use the following commands in your t
   - You can filter the results by using optional parameters:
     - ``-l <location>`` or ``--location <location>``: Filter users by location.
     - -``p <programmingLanguage>`` or ``--programmingLanguage <programmingLanguage>``: Filter users by programming language.
-    - Example: ``gh-users list -l US -p Java``
+    - Example: ``gh-users list -l "US" -p "Java"``
       - Expected behavior: Fetches and displays users who are located in the US and have experience with Java.
 
 ## Running Tests
