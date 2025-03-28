@@ -6,48 +6,51 @@ export const updateUser = async (user: User): Promise<string | undefined> => {
     await db.tx(async (transaction) => {
       const { id: userId } = await transaction.one(
         `UPDATE users SET
-          username = $2,
-          name = $3,
-          location = $4,
-          email = $5,
-          page_url = $6,
-          avatar_url = $7,
-          bio = $8,
-          created_at = $9
-          WHERE external_id = $1 RETURNING id`,
-        [
-          user.externalId,
-          user.username,
-          user.name,
-          user.location,
-          user.email,
-          user.pageUrl,
-          user.avatarUrl,
-          user.bio,
-          user.createdAt,
-        ]
+          username = $/username/,
+          name = $/name/,
+          location = $/location/,
+          email = $/email/,
+          page_url = $/pageUrl/,
+          avatar_url = $/avatarUrl/,
+          bio = $/bio/,
+          created_at = $/createdAt/
+          WHERE external_id = $/externalId/
+        RETURNING id`,
+        user
       );
 
-      await transaction.none("DELETE FROM user_languages WHERE user_id = $1", [
-        userId,
-      ]);
+      await transaction.none(
+        "DELETE FROM user_languages WHERE user_id = $/userId/",
+        {
+          userId,
+        }
+      );
 
       for (const language of user.programmingLanguages) {
         const { id: languageId } =
           (await transaction.oneOrNone(
             `INSERT INTO languages (
             name
-            ) VALUES ($1) ON CONFLICT (name) DO NOTHING RETURNING id`,
-            [language]
+            ) VALUES (
+             $/language/
+            ) ON CONFLICT (name) DO NOTHING
+            RETURNING id`,
+            { language }
           )) ||
-          (await transaction.one("SELECT id FROM languages WHERE name = $1", [
-            language,
-          ]));
+          (await transaction.one(
+            "SELECT id FROM languages WHERE name = $/language/",
+            { language }
+          ));
 
         await transaction.none(
-          `INSERT INTO user_languages (user_id, language_id) VALUES ($1, $2)
-          ON CONFLICT DO NOTHING`,
-          [userId, languageId]
+          `INSERT INTO user_languages (
+            user_id,
+            language_id
+          ) VALUES (
+            $/userId/,
+            $/languageId/
+          ) ON CONFLICT DO NOTHING`,
+          { userId, languageId }
         );
       }
     });

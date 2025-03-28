@@ -16,11 +16,11 @@ export const getByExtId = async (
         u.avatar_url,
         u.bio,
         u.created_at,
-        array_remove(array_agg(l.name), null) AS programming_languages
+        array_agg(l.name) AS programming_languages
       FROM users as u
       LEFT JOIN user_languages ul ON ul.user_id = u.id
       LEFT JOIN languages l ON l.id = ul.language_id
-      WHERE external_id = $1
+      WHERE external_id = $/externalId/
       GROUP BY
         u.external_id,
         u.username,
@@ -31,7 +31,7 @@ export const getByExtId = async (
         u.avatar_url,
         u.bio,
         u.created_at`,
-      [externalId]
+      { externalId }
     );
 
     if (!record) {
@@ -65,18 +65,25 @@ export const getByFilters = async (filters?: {
         u.avatar_url,
         u.bio,
         u.created_at,
-        array_remove(array_agg(l.name), null) AS programming_languages
+        array_agg(l.name) AS programming_languages
       FROM users as u
       LEFT JOIN user_languages ul ON ul.user_id = u.id
       LEFT JOIN languages l ON l.id = ul.language_id
       WHERE
-        ($1 IS NULL OR LOWER(u.location) LIKE '%' || $1 || '%')
-        AND ($2 IS NULL OR $2 IN (
-          SELECT LOWER(l2.name)
+        (
+          $/location/ IS NULL
+          OR LOWER(u.location) LIKE LOWER(CONCAT('%', $/location/, '%'))
+        )
+      AND
+        ($/programmingLanguage/ IS NULL
+        OR EXISTS (
+          SELECT 1
           FROM user_languages ul2
           JOIN languages l2 ON l2.id = ul2.language_id
           WHERE ul2.user_id = u.id
-        ))
+          AND LOWER(l2.name) = $/programmingLanguage/
+        )
+      )
       GROUP BY
         u.external_id,
         u.username,
@@ -87,10 +94,11 @@ export const getByFilters = async (filters?: {
         u.avatar_url,
         u.bio,
         u.created_at`,
-      [
-        filters?.location?.toLowerCase(),
-        filters?.programmingLanguage?.toLowerCase(),
-      ]
+      {
+        location: filters?.location?.toLowerCase() || null,
+        programmingLanguage:
+          filters?.programmingLanguage?.toLowerCase() || null,
+      }
     );
 
     const users = records.map((record) => mapDbObjectToUser(record));
@@ -119,6 +127,10 @@ type DbUser = {
 };
 
 const mapDbObjectToUser = (dbUser: DbUser): User => {
+  const programmingLanguages = dbUser.programming_languages.filter(
+    (language) => language
+  );
+
   return {
     externalId: dbUser.external_id,
     username: dbUser.username,
@@ -129,6 +141,6 @@ const mapDbObjectToUser = (dbUser: DbUser): User => {
     avatarUrl: dbUser.avatar_url,
     bio: dbUser.bio,
     createdAt: dbUser.created_at,
-    programmingLanguages: dbUser.programming_languages,
+    programmingLanguages,
   };
 };

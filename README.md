@@ -53,7 +53,7 @@ Before running any command in your terminal, ensure the following:
 ## Setting up the Local Environment
 To get the application ready to run, follow these steps:
 1. Run ``npm install`` to install the required Node packages.
-2. Run ``docker compose up -d`` to create and start PostgreSQL database container.
+2. Run ``docker compose up -d`` to create and start PostgreSQL database instance inside the container.
 3. Run ``npm run migrations`` to create the necessary database tables.
     - Alternatively, you can run ``npm run migrations:seeds`` to also seed the database with fictional data.
 
