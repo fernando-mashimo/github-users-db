@@ -1,8 +1,6 @@
 import { getByFilters } from "../../../infrastructure/database/functions/read";
 import { GetUsersByFiltersUseCaseInput } from "./input";
 import { GetUsersByFiltersUseCaseOutput } from "./output";
-import dotenv from "dotenv";
-dotenv.config();
 
 export const getUsersByFilters = async (
   input: GetUsersByFiltersUseCaseInput

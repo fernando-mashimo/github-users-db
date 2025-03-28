@@ -5,8 +5,6 @@ import { updateUser } from "../../../infrastructure/database/functions/update";
 import { fetchUserDataFromGitHub } from "../../../infrastructure/github/github";
 import { FetchAndPersistUserDataUseCaseInput } from "./input";
 import { FetchAndPersistUserDataUseCaseOutput } from "./output";
-import dotenv from "dotenv";
-dotenv.config();
 
 export const fetchPersistUser = async (
   input: FetchAndPersistUserDataUseCaseInput

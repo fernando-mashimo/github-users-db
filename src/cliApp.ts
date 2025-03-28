@@ -1,6 +1,8 @@
 #!/usr/bin/env ts-node
 import { fetchPersistUser } from "./application/useCases/fetchPersistUser";
 import { getUsersByFilters } from "./application/useCases/getUsersByFilters";
+import dotenv from "dotenv";
+dotenv.config();
 
 type Arguments = {
   command: "fetch" | "list";

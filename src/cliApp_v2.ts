@@ -1,8 +1,9 @@
 #!/usr/bin/env ts-node
 import { Command } from "commander";
-
 import { getUsersByFilters } from "./application/useCases/getUsersByFilters";
 import { fetchPersistUser } from "./application/useCases/fetchPersistUser";
+import dotenv from "dotenv";
+dotenv.config();
 
 const program = new Command();
 
