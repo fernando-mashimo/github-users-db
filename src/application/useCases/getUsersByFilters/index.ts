@@ -1,0 +1,21 @@
+import { getByFilters } from "../../../infrastructure/database/functions/read";
+import { GetUsersByFiltersUseCaseInput } from "./input";
+import { GetUsersByFiltersUseCaseOutput } from "./output";
+
+export const getUsersByFilters = async (
+  input: GetUsersByFiltersUseCaseInput
+): Promise<GetUsersByFiltersUseCaseOutput | undefined> => {
+  console.info("Fetching users data from database...");
+  const users = await getByFilters(input);
+
+  if (!users) return;
+
+  if (!users.length) {
+    if (input.location || input.programmingLanguages)
+      console.info("No users found with the given filters in the database");
+    else console.info("No users found in the database");
+    return;
+  }
+
+  return users;
+};

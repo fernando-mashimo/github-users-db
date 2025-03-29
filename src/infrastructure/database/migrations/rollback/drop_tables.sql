@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS user_languages;
+
+DROP TABLE IF EXISTS languages;
+
+DROP TABLE IF EXISTS users;
