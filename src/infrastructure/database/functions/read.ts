@@ -7,6 +7,7 @@ export const getByExtId = async (
   try {
     const record = await db.oneOrNone(
       `SELECT
+        u.id,
         u.external_id,
         u.username,
         u.name,
@@ -22,6 +23,7 @@ export const getByExtId = async (
       LEFT JOIN languages l ON l.id = ul.language_id
       WHERE external_id = $/externalId/
       GROUP BY
+        u.id,
         u.external_id,
         u.username,
         u.name,
@@ -51,11 +53,22 @@ export const getByExtId = async (
 
 export const getByFilters = async (filters?: {
   location?: string;
-  programmingLanguage?: string;
+  programmingLanguages?: string[];
 }): Promise<User[] | undefined> => {
+  const programmingLanguagesWhereClause = filters?.programmingLanguages
+    ? `OR EXISTS (
+        SELECT 1
+        FROM user_languages ul2
+        JOIN languages l2 ON l2.id = ul2.language_id
+        WHERE ul2.user_id = u.id
+        AND LOWER(l2.name) = ANY($/programmingLanguages/)
+      )`
+    : "";
+
   try {
     const records = await db.manyOrNone(
       `SELECT
+        u.id,
         u.external_id,
         u.username,
         u.name,
@@ -75,16 +88,11 @@ export const getByFilters = async (filters?: {
           OR LOWER(u.location) LIKE LOWER(CONCAT('%', $/location/, '%'))
         )
       AND
-        ($/programmingLanguage/ IS NULL
-        OR EXISTS (
-          SELECT 1
-          FROM user_languages ul2
-          JOIN languages l2 ON l2.id = ul2.language_id
-          WHERE ul2.user_id = u.id
-          AND LOWER(l2.name) = $/programmingLanguage/
-        )
+        ($/programmingLanguages/ IS NULL
+        ${programmingLanguagesWhereClause}
       )
       GROUP BY
+        u.id,
         u.external_id,
         u.username,
         u.name,
@@ -96,8 +104,10 @@ export const getByFilters = async (filters?: {
         u.created_at`,
       {
         location: filters?.location?.toLowerCase() || null,
-        programmingLanguage:
-          filters?.programmingLanguage?.toLowerCase() || null,
+        programmingLanguages:
+          filters?.programmingLanguages?.map((language) =>
+            language.toLowerCase()
+          ) || null,
       }
     );
 

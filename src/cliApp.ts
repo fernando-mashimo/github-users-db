@@ -8,12 +8,12 @@ type Arguments = {
   command: "fetch" | "list";
   username?: string;
   location?: string;
-  programmingLanguage?: string;
+  programmingLanguages?: string[];
 };
 
 const validateArguments = (args: string[]): boolean => {
   const allowedCommands = ["fetch", "list"];
-  const allowedOptions = ["-l", "--location", "-p", "--programmingLanguage"];
+  const allowedOptions = ["-l", "--location", "-p", "--programmingLanguages"];
 
   if (args.length < 3 || !allowedCommands.includes(args[2])) return false;
 
@@ -41,16 +41,16 @@ const parseArguments = (args: string[]): Arguments => {
       : args.includes("--location")
         ? args[args.indexOf("--location") + 1]
         : undefined;
-    const programmingLanguage = args.includes("-p")
-      ? args[args.indexOf("-p") + 1]
-      : args.includes("--programmingLanguage")
-        ? args[args.indexOf("--programmingLanguage") + 1]
+    const programmingLanguages = args.includes("-p")
+      ? args[args.indexOf("-p") + 1].split(",")
+      : args.includes("--programmingLanguages")
+        ? args[args.indexOf("--programmingLanguages") + 1].split(",")
         : undefined;
 
     return {
       command,
       location,
-      programmingLanguage,
+      programmingLanguages: programmingLanguages,
     };
   }
 
@@ -64,7 +64,7 @@ export const main = async (): Promise<number> => {
       "Invalid arguments. Please use one of the following commands:\n" +
         "  'gh-users fetch <username>'\n" +
         "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguage <programmingLanguage>]'."
+        "[-p or --programmingLanguages <programmingLanguages>]'."
     );
     return 1;
   }
@@ -92,7 +92,7 @@ export const main = async (): Promise<number> => {
     try {
       const users = await getUsersByFilters({
         location: argument.location,
-        programmingLanguage: argument.programmingLanguage,
+        programmingLanguages: argument.programmingLanguages,
       });
       if (users && users.length) {
         console.info("Found users data:", users);

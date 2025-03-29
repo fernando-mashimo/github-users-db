@@ -84,8 +84,14 @@ describe("Should list users", () => {
     expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
   });
 
-  test("when list provided with --programmingLanguage parameter", async () => {
-    process.argv = ["node", "script", "list", "--programmingLanguage", "test"];
+  test("when list provided with --programmingLanguages parameter", async () => {
+    process.argv = [
+      "node",
+      "script",
+      "list",
+      "--programmingLanguages",
+      "test1,test2",
+    ];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
     const consoleSpy = jest.spyOn(console, "info");
@@ -116,15 +122,15 @@ describe("Should list users", () => {
     expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
   });
 
-  test("when provided --location and --programmingLanguage", async () => {
+  test("when provided --location and --programmingLanguages", async () => {
     process.argv = [
       "node",
       "script",
       "list",
       "--location",
       "test location",
-      "--programmingLanguage",
-      "test",
+      "--programmingLanguages",
+      "test1,test2",
     ];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
@@ -149,7 +155,7 @@ describe("Should not list users", () => {
       "Invalid arguments. Please use one of the following commands:\n" +
         "  'gh-users fetch <username>'\n" +
         "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguage <programmingLanguage>]'."
+        "[-p or --programmingLanguages <programmingLanguages>]'."
     );
   });
 
@@ -164,7 +170,7 @@ describe("Should not list users", () => {
       "Invalid arguments. Please use one of the following commands:\n" +
         "  'gh-users fetch <username>'\n" +
         "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguage <programmingLanguage>]'."
+        "[-p or --programmingLanguages <programmingLanguages>]'."
     );
   });
 });
@@ -194,7 +200,7 @@ describe("Should not fetch/persist user data", () => {
       "Invalid arguments. Please use one of the following commands:\n" +
         "  'gh-users fetch <username>'\n" +
         "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguage <programmingLanguage>]'."
+        "[-p or --programmingLanguages <programmingLanguages>]'."
     );
   });
 });
@@ -211,7 +217,7 @@ describe("Should not list nor fetch/persist user data", () => {
       "Invalid arguments. Please use one of the following commands:\n" +
         "  'gh-users fetch <username>'\n" +
         "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguage <programmingLanguage>]'."
+        "[-p or --programmingLanguages <programmingLanguages>]'."
     );
   });
 
@@ -226,7 +232,7 @@ describe("Should not list nor fetch/persist user data", () => {
       "Invalid arguments. Please use one of the following commands:\n" +
         "  'gh-users fetch <username>'\n" +
         "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguage <programmingLanguage>]'."
+        "[-p or --programmingLanguages <programmingLanguages>]'."
     );
   });
 });
