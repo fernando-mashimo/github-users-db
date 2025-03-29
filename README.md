@@ -79,7 +79,7 @@ Once all pre-requisites are set up, you can use the following commands in your t
     - `-l <location>` or `--location <location>`: Filter users by location.
     - -`p <programmingLanguages>` or `--programmingLanguages <programmingLanguages>`: Filter users by programming languages.
     - Example: `gh-users list -l "US" -p "Java,Python"`
-      - Expected behavior: Fetches and displays users who are located in the US and have experience with Java.
+      - Expected behavior: Fetches and displays users who are located in the US and have experience with Java OR Python.
       - Note: When listing programming languages, separate them with commas (do not include spaces).
 
 The following error message will be shown if an invalid command syntax is used:
