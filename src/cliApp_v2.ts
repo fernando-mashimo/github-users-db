@@ -14,10 +14,7 @@ program
     try {
       const persistedUser = await fetchPersistUser({ username });
       if (persistedUser) {
-        console.info(
-          `User data successfully fetched and created/updated in the database!
-          \nPersisted user data:`
-        );
+        console.info("Persisted user data:");
         console.info(persistedUser);
       }
     } catch (error) {
@@ -32,11 +29,14 @@ program
   .description("List users in the database (with optional filters)")
   .option("-l, --location <location>", "Filter Users by location")
   .option(
-    "-p, --programmingLanguage <programmingLanguage>",
-    "Filter Users by programming language"
+    "-p, --programmingLanguages <programmingLanguages>",
+    "Filter Users by programming languages"
   )
   .action(async (options) => {
-    const users = await getUsersByFilters(options);
+    const location = options.location || undefined;
+    const programmingLanguages =
+      options.programmingLanguages?.split(",") || undefined;
+    const users = await getUsersByFilters({ location, programmingLanguages });
     if (users && users.length) {
       console.info("Found users data:", users);
     }
