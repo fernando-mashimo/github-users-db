@@ -173,6 +173,32 @@ describe("Should not list users", () => {
         "[-p or --programmingLanguages <programmingLanguages>]'."
     );
   });
+
+  test("when no users with provided filters have been found", async () => {
+    process.argv = ["node", "script", "list", "-l", "test location"];
+
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([]);
+    const consoleSpy = jest.spyOn(console, "info");
+
+    const exitCode = await main();
+
+    expect(exitCode).toBe(0);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "No users found with the given filters in the database"
+    );
+  });
+
+  test("when no users have been found in the database", async () => {
+    process.argv = ["node", "script", "list"];
+
+    (getUsersByFilters as jest.Mock).mockResolvedValueOnce([]);
+    const consoleSpy = jest.spyOn(console, "info");
+
+    const exitCode = await main();
+
+    expect(exitCode).toBe(0);
+    expect(consoleSpy).toHaveBeenCalledWith("No users found in the database");
+  });
 });
 
 describe("Should fetch/persist user data", () => {
@@ -185,6 +211,9 @@ describe("Should fetch/persist user data", () => {
 
     expect(exitCode).toBe(0);
     expect(consoleSpy).toHaveBeenCalledWith("Persisted user data:", mockedUser);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "User data successfully fetched and created/updated in the database!"
+    );
   });
 });
 

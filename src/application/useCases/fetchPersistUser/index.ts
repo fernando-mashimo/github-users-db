@@ -9,7 +9,6 @@ import { FetchAndPersistUserDataUseCaseOutput } from "./output";
 export const fetchPersistUser = async (
   input: FetchAndPersistUserDataUseCaseInput
 ): Promise<FetchAndPersistUserDataUseCaseOutput | undefined> => {
-  console.info(`Fetching user ${input.username} data from GitHub...`);
   const userGhData: User | undefined = await fetchUserDataFromGitHub(
     input.username
   );
@@ -30,8 +29,5 @@ export const fetchPersistUser = async (
     if (!createdUser) return;
   }
 
-  console.info(
-    "User data successfully fetched and created/updated in the database!"
-  );
   return userGhData;
 };

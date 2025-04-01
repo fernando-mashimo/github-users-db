@@ -73,10 +73,15 @@ export const main = async (): Promise<number> => {
 
   if (argument.command === "fetch") {
     try {
+      console.info(`Fetching user ${argument.username} data from GitHub...`);
+
       const persistedUser = await fetchPersistUser({
         username: argument.username!,
       });
       if (persistedUser) {
+        console.info(
+          "User data successfully fetched and created/updated in the database!"
+        );
         console.info("Persisted user data:", persistedUser);
       }
     } catch (error) {
@@ -90,11 +95,18 @@ export const main = async (): Promise<number> => {
 
   if (argument.command === "list") {
     try {
+      console.info("Fetching users data from database...");
       const users = await getUsersByFilters({
         location: argument.location,
         programmingLanguages: argument.programmingLanguages,
       });
-      if (users && users.length) {
+      if (!users || !users.length) {
+        if (argument.location || argument.programmingLanguages) {
+          console.info("No users found with the given filters in the database");
+        } else {
+          console.info("No users found in the database");
+        }
+      } else {
         console.info("Found users data:", users);
       }
     } catch (error) {

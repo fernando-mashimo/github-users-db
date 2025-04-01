@@ -40,28 +40,22 @@ describe("Should not fetch users by filters", () => {
   // eslint-disable-next-line max-len
   test("when no filtering parameters are provided and no users are found in the database", async () => {
     (getByFilters as jest.Mock).mockResolvedValueOnce([]);
-    const consoleSpy = jest.spyOn(console, "info").mockImplementation();
 
     const useCaseInput = {};
 
     const result = await getUsersByFilters(useCaseInput);
 
-    expect(result).toBeUndefined();
-    expect(consoleSpy).toHaveBeenCalledWith("No users found in the database");
+    expect(result).toEqual([]);
   });
 
   // eslint-disable-next-line max-len
   test("when filtering parameters are provided and no users are found in the database", async () => {
     (getByFilters as jest.Mock).mockResolvedValueOnce([]);
-    const consoleSpy = jest.spyOn(console, "info").mockImplementation();
 
     const useCaseInput = { location: "Test Location" };
 
     const result = await getUsersByFilters(useCaseInput);
 
-    expect(result).toBeUndefined();
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "No users found with the given filters in the database"
-    );
+    expect(result).toEqual([]);
   });
 });
