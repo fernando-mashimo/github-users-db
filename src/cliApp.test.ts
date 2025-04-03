@@ -18,6 +18,12 @@ const mockedUser: User = {
   createdAt: "mocked date",
 };
 
+const invalidArgumentsMessage =
+  "Invalid arguments. Please use one of the following commands:\n" +
+  "  'gh-users fetch <username>'\n" +
+  "  'gh-users list [-l or --location <location>] " +
+  "[-p or --programmingLanguages <programmingLanguages>]'.";
+
 jest.mock("./application/useCases/getUsersByFilters", () => ({
   getUsersByFilters: jest.fn(),
 }));
@@ -151,12 +157,7 @@ describe("Should not list users", () => {
     const exitCode = await main();
 
     expect(exitCode).toBe(1);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Invalid arguments. Please use one of the following commands:\n" +
-        "  'gh-users fetch <username>'\n" +
-        "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguages <programmingLanguages>]'."
-    );
+    expect(consoleSpy).toHaveBeenCalledWith(invalidArgumentsMessage);
   });
 
   test("when one of the options provided is not valid", async () => {
@@ -166,12 +167,7 @@ describe("Should not list users", () => {
     const exitCode = await main();
 
     expect(exitCode).toBe(1);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Invalid arguments. Please use one of the following commands:\n" +
-        "  'gh-users fetch <username>'\n" +
-        "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguages <programmingLanguages>]'."
-    );
+    expect(consoleSpy).toHaveBeenCalledWith(invalidArgumentsMessage);
   });
 
   test("when no users with provided filters have been found", async () => {
@@ -225,12 +221,7 @@ describe("Should not fetch/persist user data", () => {
     const exitCode = await main();
 
     expect(exitCode).toBe(1);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Invalid arguments. Please use one of the following commands:\n" +
-        "  'gh-users fetch <username>'\n" +
-        "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguages <programmingLanguages>]'."
-    );
+    expect(consoleSpy).toHaveBeenCalledWith(invalidArgumentsMessage);
   });
 });
 
@@ -242,12 +233,7 @@ describe("Should not list nor fetch/persist user data", () => {
     const exitCode = await main();
 
     expect(exitCode).toBe(1);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Invalid arguments. Please use one of the following commands:\n" +
-        "  'gh-users fetch <username>'\n" +
-        "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguages <programmingLanguages>]'."
-    );
+    expect(consoleSpy).toHaveBeenCalledWith(invalidArgumentsMessage);
   });
 
   test("when provided command argument is not 'fetch' nor 'list'", async () => {
@@ -257,11 +243,6 @@ describe("Should not list nor fetch/persist user data", () => {
     const exitCode = await main();
 
     expect(exitCode).toBe(1);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Invalid arguments. Please use one of the following commands:\n" +
-        "  'gh-users fetch <username>'\n" +
-        "  'gh-users list [-l or --location <location>] " +
-        "[-p or --programmingLanguages <programmingLanguages>]'."
-    );
+    expect(consoleSpy).toHaveBeenCalledWith(invalidArgumentsMessage);
   });
 });
