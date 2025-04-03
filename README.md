@@ -43,6 +43,7 @@ Before running any command in your terminal, ensure the following:
     - [Install Docker Compose](https://docs.docker.com/compose/install/)
 
 - You have a **GitHub Personal Access Token (Classic)**:
+  - This token is required to make successful requests to GitHub API.
   - If you haven't created one yet, follow the guide here: [Creating a Personal Access Token (Classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
 
 ## Setting up the Local Environment
@@ -62,7 +63,7 @@ To get the application ready to run, follow these steps:
 3. Run `docker compose up -d` to create and start the PostgreSQL database instance inside a Docker container.
 4. Run `npm run migrations` to create the necessary database tables.
    - Alternatively, you can run `npm run migrations:seeds` to also seed the database with fictional data.
-5. Run `npm link` to make the CLI application globally available (you will then be able to run it using the `gh-users` command).
+5. Run `npm link` to make the CLI application "alias" globally available: this will allow running the command `gh-users <command> <arguments>` instead of running `ts-node <cli_application_file_name> <command> <arguments>`, providing a better user experience.
 
 ## Running the CLI App
 
