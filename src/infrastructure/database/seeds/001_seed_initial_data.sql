@@ -12,7 +12,7 @@ VALUES
   (
     'some-user-123456789',
     'Some User',
-    'Some City, SS',
+    'Some City, SS, US',
     'some_user@email.com',
     'https://github.com/some-user-123456789',
     'https://avatars.githubusercontent.com/u/123456789?v=4',

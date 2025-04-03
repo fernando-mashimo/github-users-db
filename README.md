@@ -74,14 +74,20 @@ Once all pre-requisites are set up, you can use the following commands in your t
 - `gh-users fetch <GitHub username>`: Fetch a user's data from GitHub (using the official public API) and persist it in your local PostgreSQL database.
 
   - Example: `gh-users fetch fernando-mashimo`
+  - Expected outcome:
+  
+      ![Fetched and Persisted User data](./FetchedUser.png)
+
 
 - `gh-users list`: Fetch and display a list of all users stored in the database.
   - You can filter the results by using optional parameters:
     - `-l <location>` or `--location <location>`: Filter users by location.
     - -`p <programmingLanguages>` or `--programmingLanguages <programmingLanguages>`: Filter users by programming languages.
     - Example: `gh-users list -l "US" -p "Java,Python"`
-      - Expected behavior: Fetches and displays users who are located in the US and have experience with Java OR Python.
       - Note: When listing programming languages, separate them with commas (do not include spaces).
+      - Expected outcome: Fetches and displays users who are located in the US and have experience with Java OR Python.
+
+        ![Users found in database](./FoundUsers.png)
 
 The following error message will be shown if an invalid command syntax is used:
 

@@ -20,7 +20,7 @@ VALUES
   (
     'other-user-987654321',
     'Other User',
-    'Other City, SS',
+    'Other City, SS, US',
     'other_user@email.com',
     'https://github.com/some-user-987654321',
     'https://avatars.githubusercontent.com/u/987654321?v=4',
