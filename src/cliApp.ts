@@ -82,7 +82,15 @@ export const main = async (): Promise<number> => {
         console.info(
           "User data successfully fetched and created/updated in the database!"
         );
-        console.info("Persisted user data:", persistedUser);
+        console.info("Persisted user data:");
+        const { programmingLanguages, ...rest } = persistedUser;
+        console.table({
+          ...rest,
+          createdAt: new Date(rest.createdAt).toLocaleString("en-US", {
+            timeZone: "America/Sao_Paulo",
+          }),
+          programmingLanguages: programmingLanguages.join(", "),
+        });
       }
     } catch (error) {
       console.error(
@@ -107,7 +115,17 @@ export const main = async (): Promise<number> => {
           console.info("No users found in the database");
         }
       } else {
-        console.info("Found users data:", users);
+        console.info("Found users data:");
+        users.map((user) => {
+          const { programmingLanguages, ...rest } = user;
+          console.table({
+            ...rest,
+            createdAt: new Date(rest.createdAt).toLocaleString("en-US", {
+              timeZone: "America/Sao_Paulo",
+            }),
+            programmingLanguages: programmingLanguages.join(", "),
+          });
+        });
       }
     } catch (error) {
       console.error("An error occurred while fetching users:", error);

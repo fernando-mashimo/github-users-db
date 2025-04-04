@@ -15,7 +15,17 @@ const mockedUser: User = {
   pageUrl: "mocked-url",
   avatarUrl: "mocked-avatar-url",
   bio: "mocked bio",
-  createdAt: "mocked date",
+  createdAt: new Date("2025-01-01T00:00:00Z").toLocaleString("en-US", {
+    timeZone: "America/Sao_Paulo",
+  }),
+};
+
+const expectedUser = {
+  ...mockedUser,
+  createdAt: new Date(mockedUser.createdAt).toLocaleString("en-US", {
+    timeZone: "America/Sao_Paulo",
+  }),
+  programmingLanguages: mockedUser.programmingLanguages.join(", "),
 };
 
 const invalidArgumentsMessage =
@@ -46,48 +56,48 @@ describe("Should list users", () => {
     process.argv = ["node", "script", "list"];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleSpy = jest.spyOn(console, "table");
 
     const exitCode = await main();
 
     expect(exitCode).toBe(0);
-    expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
+    expect(consoleSpy).toHaveBeenCalledWith(expectedUser);
   });
 
   test("when list command provided with -l parameter", async () => {
     process.argv = ["node", "script", "list", "-l", "test location"];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleSpy = jest.spyOn(console, "table");
 
     const exitCode = await main();
 
     expect(exitCode).toBe(0);
-    expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
+    expect(consoleSpy).toHaveBeenCalledWith(expectedUser);
   });
 
   test("when list command provided with -p parameter", async () => {
     process.argv = ["node", "script", "list", "-p", "test"];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleSpy = jest.spyOn(console, "table");
 
     const exitCode = await main();
 
     expect(exitCode).toBe(0);
-    expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
+    expect(consoleSpy).toHaveBeenCalledWith(expectedUser);
   });
 
   test("when list command provided with --location parameter", async () => {
     process.argv = ["node", "script", "list", "--location", "test location"];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleSpy = jest.spyOn(console, "table");
 
     const exitCode = await main();
 
     expect(exitCode).toBe(0);
-    expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
+    expect(consoleSpy).toHaveBeenCalledWith(expectedUser);
   });
 
   test("when list provided with --programmingLanguages parameter", async () => {
@@ -100,12 +110,12 @@ describe("Should list users", () => {
     ];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleSpy = jest.spyOn(console, "table");
 
     const exitCode = await main();
 
     expect(exitCode).toBe(0);
-    expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
+    expect(consoleSpy).toHaveBeenCalledWith(expectedUser);
   });
 
   test("when list provided with -l and -p parameters", async () => {
@@ -120,12 +130,12 @@ describe("Should list users", () => {
     ];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleSpy = jest.spyOn(console, "table");
 
     const exitCode = await main();
 
     expect(exitCode).toBe(0);
-    expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
+    expect(consoleSpy).toHaveBeenCalledWith(expectedUser);
   });
 
   test("when provided --location and --programmingLanguages", async () => {
@@ -140,12 +150,12 @@ describe("Should list users", () => {
     ];
 
     (getUsersByFilters as jest.Mock).mockResolvedValueOnce([mockedUser]);
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleSpy = jest.spyOn(console, "table");
 
     const exitCode = await main();
 
     expect(exitCode).toBe(0);
-    expect(consoleSpy).toHaveBeenCalledWith("Found users data:", [mockedUser]);
+    expect(consoleSpy).toHaveBeenCalledWith(expectedUser);
   });
 });
 
@@ -200,14 +210,15 @@ describe("Should not list users", () => {
 describe("Should fetch/persist user data", () => {
   test("when provided a username", async () => {
     process.argv = ["node", "script", "fetch", "test-username"];
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleTableSpy = jest.spyOn(console, "table");
+    const consoleInfoSpy = jest.spyOn(console, "info");
     (fetchPersistUser as jest.Mock).mockResolvedValueOnce(mockedUser);
 
     const exitCode = await main();
 
     expect(exitCode).toBe(0);
-    expect(consoleSpy).toHaveBeenCalledWith("Persisted user data:", mockedUser);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(consoleTableSpy).toHaveBeenCalledWith(expectedUser);
+    expect(consoleInfoSpy).toHaveBeenCalledWith(
       "User data successfully fetched and created/updated in the database!"
     );
   });
