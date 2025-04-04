@@ -89,13 +89,27 @@ Once all pre-requisites are set up, you can use the following commands in your t
 
         ![Users found in database](./FoundUsers.png)
 
-The following error message will be shown if an invalid command syntax is used:
+- The following error messages will be shown:
+   - when an invalid command syntax is used:
+      ```bash
+      Invalid arguments. Please use one of the following commands:
+      'gh-users fetch <username>'
+      'gh-users list [-l or --location <location>] [-p or --programmingLanguages <programmingLanguages>]'
+      ```
 
-```bash
-Invalid arguments. Please use one of the following commands:
-  'gh-users fetch <username>'
-  'gh-users list [-l or --location <location>] [-p or --programmingLanguages <programmingLanguages>]'
-```
+   - when no users have been found at GitHub with the provided user name:
+      ```bash
+      HTTP Error: 404 - User with username fernando-mashim not found at GitHub.
+      ```
+
+   - when there is an issue with the provided GitHub personal access token:
+      ```bash
+      HTTP Error: 401: Unauthorized credentials
+      ```
+      or
+      ```bash
+      HTTP Error: 403: Forbidden access
+      ```
 
 ## Running Tests
 
