@@ -121,6 +121,7 @@ export const main = async (): Promise<number> => {
             createdAt: new Date(rest.createdAt).toLocaleString(),
             programmingLanguages: programmingLanguages.join(", "),
           });
+          return;
         });
       }
     } catch (error) {

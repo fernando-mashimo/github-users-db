@@ -33,25 +33,31 @@ export const createUser = async (user: User): Promise<string | undefined> => {
 
       if (!userId) return;
 
-      for (const language of user.programmingLanguages) {
-        const { id: languageId } =
-          (await transaction.oneOrNone(
-            `INSERT INTO languages (
+      // Creating an array of unique programming languages
+      // to avoid concurrency issues when inserting data into the tables
+      // even though there is already handling of duplicates/conflicting data
+      const uniqueLanguages = [...new Set(user.programmingLanguages)];
+
+      await Promise.all(
+        uniqueLanguages.map(async (language) => {
+          const { id: languageId } =
+            (await transaction.oneOrNone(
+              `INSERT INTO languages (
               name
             ) VALUES (
               $/language/
             )
             ON CONFLICT (name) DO NOTHING
             RETURNING id`,
-            { language }
-          )) ||
-          (await transaction.one(
-            "SELECT id FROM languages WHERE name = $/language/",
-            { language }
-          ));
+              { language }
+            )) ||
+            (await transaction.one(
+              "SELECT id FROM languages WHERE name = $/language/",
+              { language }
+            ));
 
-        await transaction.none(
-          `INSERT INTO user_languages (
+          await transaction.none(
+            `INSERT INTO user_languages (
             user_id,
             language_id
           ) VALUES (
@@ -59,9 +65,10 @@ export const createUser = async (user: User): Promise<string | undefined> => {
             $/languageId/
           )
           ON CONFLICT DO NOTHING`,
-          { userId, languageId }
-        );
-      }
+            { userId, languageId }
+          );
+        })
+      );
     });
 
     return user.username;
