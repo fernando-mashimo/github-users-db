@@ -86,9 +86,7 @@ export const main = async (): Promise<number> => {
         const { programmingLanguages, ...rest } = persistedUser;
         console.table({
           ...rest,
-          createdAt: new Date(rest.createdAt).toLocaleString("en-US", {
-            timeZone: "America/Sao_Paulo",
-          }),
+          createdAt: new Date(rest.createdAt).toLocaleString(),
           programmingLanguages: programmingLanguages.join(", "),
         });
       }
@@ -120,9 +118,7 @@ export const main = async (): Promise<number> => {
           const { programmingLanguages, ...rest } = user;
           console.table({
             ...rest,
-            createdAt: new Date(rest.createdAt).toLocaleString("en-US", {
-              timeZone: "America/Sao_Paulo",
-            }),
+            createdAt: new Date(rest.createdAt).toLocaleString(),
             programmingLanguages: programmingLanguages.join(", "),
           });
         });

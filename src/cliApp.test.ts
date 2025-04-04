@@ -15,9 +15,7 @@ const mockedUser: User = {
   pageUrl: "mocked-url",
   avatarUrl: "mocked-avatar-url",
   bio: "mocked bio",
-  createdAt: new Date("2025-01-01T00:00:00Z").toLocaleString("en-US", {
-    timeZone: "America/Sao_Paulo",
-  }),
+  createdAt: new Date("2025-01-01T00:00:00Z").toLocaleString(),
 };
 
 const expectedUser = {
