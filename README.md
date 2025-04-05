@@ -107,7 +107,8 @@ Once all pre-requisites are set up, you can use the following commands in your t
       ```bash
       HTTP Error: 401: Unauthorized credentials
       ```
-      or
+   
+   - when reached maximum request rate:
       ```bash
       HTTP Error: 403: Forbidden access
       ```
