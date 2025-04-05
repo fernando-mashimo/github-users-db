@@ -42,9 +42,10 @@ Before running any command in your terminal, ensure the following:
     - [Get Docker](https://docs.docker.com/get-docker/)
     - [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-- You have a **GitHub Personal Access Token (Classic)**:
-  - This token is required to make successful requests to GitHub API.
-  - If you haven't created one yet, follow the guide here: [Creating a Personal Access Token (Classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+- (Optional) You have a **GitHub Personal Access Token (Classic)**:
+  - To simulate a real-world application environment, this project supports authentication via a GitHub Personal Access Token (Classic).
+  - Although not strictly required for this particular use case, using a token enables authenticated requests to the GitHub API, significantly increasing the rate limit — from 60 requests per hour (unauthenticated) to 5,000 requests per hour (authenticated).
+  - If you wish to create a token, follow the guide here: [Creating a Personal Access Token (Classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
 
 ## Setting up the Local Environment
 
@@ -52,7 +53,7 @@ To get the application ready to run, follow these steps:
 
 1. Create a `.env` file in the project root directory with the following variables:
    ```bash
-   GITHUB_API_TOKEN="your GitHub personal access token"
+   GITHUB_API_TOKEN="fill with your GitHub personal access token, or leave it blank"
    DB_HOST=localhost
    DB_PORT=5432
    DB_NAME=github-db
