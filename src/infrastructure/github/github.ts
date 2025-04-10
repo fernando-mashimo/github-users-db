@@ -86,14 +86,17 @@ const fetchUserReposData = async (
     // - starts from 2
     const pages = Array.from({ length: lastPage - 1 }, (_, index) => index + 2);
 
-    const additionalReposData = await Promise.all(
+    const additionalReposData = await Promise.allSettled(
       pages.map((page) =>
         axios.get(`${reposDataUrl}?page=${page}`, { headers })
       )
     );
 
     const allReposData = additionalReposData.reduce(
-      (acc, additionalData) => acc.concat(additionalData.data),
+      (acc, additionalData) =>
+        additionalData.status === "fulfilled"
+          ? acc.concat(additionalData.value.data)
+          : acc,
       response.data
     );
 
