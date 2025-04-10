@@ -1,5 +1,5 @@
 const mockUserData = {
-  externalId: "123",
+  externalId: 123,
   username: "testuser",
   name: "Test User",
   location: "Test Location",
