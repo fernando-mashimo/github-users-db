@@ -11,7 +11,7 @@ const mockUserData = {
   programmingLanguages: ["JavaScript", "TypeScript"],
 };
 
-import { fetchPersistUser } from ".";
+import { fetchAndPersistUser } from ".";
 import { createUser } from "../../../infrastructure/database/functions/create";
 import { getByExtId } from "../../../infrastructure/database/functions/read";
 import { updateUser } from "../../../infrastructure/database/functions/update";
@@ -42,7 +42,7 @@ describe("Should fetch and persist user data", () => {
   test("when user still not created in the database", async () => {
     const consoleSpy = jest.spyOn(console, "info").mockImplementation();
 
-    const result = await fetchPersistUser(useCaseInput);
+    const result = await fetchAndPersistUser(useCaseInput);
 
     expect(result).toEqual(mockUserData);
     expect(consoleSpy).toHaveBeenCalledWith(
@@ -54,7 +54,7 @@ describe("Should fetch and persist user data", () => {
     (getByExtId as jest.Mock).mockResolvedValueOnce(mockUserData);
     const consoleSpy = jest.spyOn(console, "info").mockImplementation();
 
-    const result = await fetchPersistUser(useCaseInput);
+    const result = await fetchAndPersistUser(useCaseInput);
 
     expect(result).toEqual(mockUserData);
     expect(consoleSpy).toHaveBeenCalledWith(
@@ -67,7 +67,7 @@ describe("Should not fetch/persist user data", () => {
   test("when user does not exist in GitHub", async () => {
     (fetchUserDataFromGitHub as jest.Mock).mockResolvedValueOnce(undefined);
 
-    const result = await fetchPersistUser(useCaseInput);
+    const result = await fetchAndPersistUser(useCaseInput);
 
     expect(result).toBeUndefined();
   });
@@ -75,7 +75,7 @@ describe("Should not fetch/persist user data", () => {
   test("when an error occurs while creating user data", async () => {
     (createUser as jest.Mock).mockResolvedValueOnce(undefined);
 
-    const result = await fetchPersistUser(useCaseInput);
+    const result = await fetchAndPersistUser(useCaseInput);
 
     expect(result).toBeUndefined();
   });
@@ -84,7 +84,7 @@ describe("Should not fetch/persist user data", () => {
     (getByExtId as jest.Mock).mockResolvedValueOnce(mockUserData);
     (updateUser as jest.Mock).mockResolvedValueOnce(undefined);
 
-    const result = await fetchPersistUser(useCaseInput);
+    const result = await fetchAndPersistUser(useCaseInput);
 
     expect(result).toBeUndefined();
   });

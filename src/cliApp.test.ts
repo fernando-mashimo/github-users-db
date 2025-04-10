@@ -1,4 +1,4 @@
-import { fetchPersistUser } from "./application/useCases/fetchPersistUser";
+import { fetchAndPersistUser } from "./application/useCases/fetchPersistUser";
 import { getUsersByFilters } from "./application/useCases/getUsersByFilters";
 import { main } from "./cliApp";
 import { User } from "./domain/entities/user";
@@ -210,7 +210,7 @@ describe("Should fetch/persist user data", () => {
     process.argv = ["node", "script", "fetch", "test-username"];
     const consoleTableSpy = jest.spyOn(console, "table");
     const consoleInfoSpy = jest.spyOn(console, "info");
-    (fetchPersistUser as jest.Mock).mockResolvedValueOnce(mockedUser);
+    (fetchAndPersistUser as jest.Mock).mockResolvedValueOnce(mockedUser);
 
     const exitCode = await main();
 

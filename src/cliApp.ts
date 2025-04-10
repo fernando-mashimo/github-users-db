@@ -1,5 +1,5 @@
 #!/usr/bin/env ts-node
-import { fetchPersistUser } from "./application/useCases/fetchPersistUser";
+import { fetchAndPersistUser } from "./application/useCases/fetchPersistUser";
 import { getUsersByFilters } from "./application/useCases/getUsersByFilters";
 import dotenv from "dotenv";
 dotenv.config();
@@ -75,7 +75,7 @@ export const main = async (): Promise<number> => {
     try {
       console.info(`Fetching user ${argument.username} data from GitHub...`);
 
-      const persistedUser = await fetchPersistUser({
+      const persistedUser = await fetchAndPersistUser({
         username: argument.username!,
       });
       if (persistedUser) {

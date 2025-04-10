@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node
 import { Command } from "commander";
 import { getUsersByFilters } from "./application/useCases/getUsersByFilters";
-import { fetchPersistUser } from "./application/useCases/fetchPersistUser";
+import { fetchAndPersistUser } from "./application/useCases/fetchPersistUser";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -12,7 +12,7 @@ program
   .description("Fetch user data from GitHub and persist it in the database")
   .action(async (username: string) => {
     try {
-      const persistedUser = await fetchPersistUser({ username });
+      const persistedUser = await fetchAndPersistUser({ username });
       if (persistedUser) {
         console.info("Persisted user data:");
         console.info(persistedUser);
