@@ -130,6 +130,10 @@ Currently, there a few tests that may be run through the command:
 
 ![ERD Diagram](./ERD.png)
 
+## Application workflows high-level schema
+
+![High Level Schema](./HighLevel.png)
+
 ## You may also want to try...
 
 ### Another implementation of the CLI with the command "gh-users-v2"
