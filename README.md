@@ -18,9 +18,9 @@ To clone and set up the project:
    cd github-users-db
    ```
 
-3. Switch to the correct branch:
+3. Make sure you are in the main branch:
    ```bash
-   git checkout feature/create-cli-app
+   git checkout main
    ```
 
 ## Pre-requisites
