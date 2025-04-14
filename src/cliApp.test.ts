@@ -37,7 +37,7 @@ jest.mock("./application/useCases/getUsersByFilters", () => ({
 }));
 
 jest.mock("./application/useCases/fetchPersistUser", () => ({
-  fetchPersistUser: jest.fn(),
+  fetchAndPersistUser: jest.fn(),
 }));
 
 afterEach(() => {
