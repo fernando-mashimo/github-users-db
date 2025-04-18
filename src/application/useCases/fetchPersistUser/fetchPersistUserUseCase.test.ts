@@ -15,11 +15,11 @@ import { fetchAndPersistUser } from ".";
 import { createUser } from "../../../infrastructure/database/functions/create";
 import { getByExtId } from "../../../infrastructure/database/functions/read";
 import { updateUser } from "../../../infrastructure/database/functions/update";
-import { fetchUserDataFromGitHub } from "../../../infrastructure/github/github";
+import { getUserInformation } from "../../../infrastructure/github/github";
 import { FetchAndPersistUserDataUseCaseInput } from "./input";
 
 jest.mock("../../../infrastructure/github/github", () => ({
-  fetchUserDataFromGitHub: jest.fn().mockResolvedValue(mockUserData),
+  getUserInformation: jest.fn().mockResolvedValue(mockUserData),
 }));
 
 jest.mock("../../../infrastructure/database/functions/read", () => ({
@@ -65,7 +65,7 @@ describe("Should fetch and persist user data", () => {
 
 describe("Should not fetch/persist user data", () => {
   test("when user does not exist in GitHub", async () => {
-    (fetchUserDataFromGitHub as jest.Mock).mockResolvedValueOnce(undefined);
+    (getUserInformation as jest.Mock).mockResolvedValueOnce(undefined);
 
     const result = await fetchAndPersistUser(useCaseInput);
 

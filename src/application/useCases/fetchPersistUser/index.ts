@@ -2,16 +2,14 @@ import { User } from "../../../domain/entities/user";
 import { createUser } from "../../../infrastructure/database/functions/create";
 import { getByExtId } from "../../../infrastructure/database/functions/read";
 import { updateUser } from "../../../infrastructure/database/functions/update";
-import { fetchUserDataFromGitHub } from "../../../infrastructure/github/github";
+import { getUserInformation } from "../../../infrastructure/github/github";
 import { FetchAndPersistUserDataUseCaseInput } from "./input";
 import { FetchAndPersistUserDataUseCaseOutput } from "./output";
 
 export const fetchAndPersistUser = async (
   input: FetchAndPersistUserDataUseCaseInput
 ): Promise<FetchAndPersistUserDataUseCaseOutput | undefined> => {
-  const userGhData: User | undefined = await fetchUserDataFromGitHub(
-    input.username
-  );
+  const userGhData: User | undefined = await getUserInformation(input.username);
   // if user not found in GitHub or credentials invalid, return undefined
   if (!userGhData) return;
 
